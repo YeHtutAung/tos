@@ -47,7 +47,7 @@ public class JwtUtils {
 		}
 	}
 
-	public String generateToken(String token) {
+	public String getUsernameFromToken(String token) {
 		return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build().parseSignedClaims(token)
 				.getPayload().getSubject();
 	}

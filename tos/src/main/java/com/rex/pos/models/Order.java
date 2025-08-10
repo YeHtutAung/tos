@@ -6,8 +6,13 @@ package com.rex.pos.models;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.rex.pos.common.Auditable;
+
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,91 +26,37 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "orders") // 'Order' is a reserved keyword in SQL
-public class Order {
+public class Order extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
+	@Column(nullable = true)
 	private Wyne wyne;
 
+	@ManyToOne
+	@Column(nullable = true)
+	private User user;
+
+	@Column(nullable = false)
 	private LocalDateTime orderTime;
 
-	private String status; // "PENDING", "COMPLETED"
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private OrderStatus status = OrderStatus.PENDING; // "PENDING", "COMPLETED"
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderItem> items;
 
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the wyne
-	 */
-	public Wyne getWyne() {
-		return wyne;
-	}
-
-	/**
-	 * @param wyne the wyne to set
-	 */
-	public void setWyne(Wyne wyne) {
-		this.wyne = wyne;
-	}
-
-	/**
-	 * @return the orderTime
-	 */
-	public LocalDateTime getOrderTime() {
-		return orderTime;
-	}
-
-	/**
-	 * @param orderTime the orderTime to set
-	 */
-	public void setOrderTime(LocalDateTime orderTime) {
-		this.orderTime = orderTime;
-	}
-
-	/**
-	 * @return the status
-	 */
-	public String getStatus() {
-		return status;
-	}
-
-	/**
-	 * @param status the status to set
-	 */
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	/**
-	 * @return the items
-	 */
-	public List<OrderItem> getItems() {
-		return items;
-	}
-
-	/**
-	 * @param items the items to set
-	 */
-	public void setItems(List<OrderItem> items) {
-		this.items = items;
-	}
+	@Column(nullable = false)
+	private double totalAmount;
 	
-	
+	@Column(nullable = true)
+    private String deliveryAddress; 
+
+	public enum OrderStatus {
+		PENDING, DELIVERED, PREPARING, COMPLETED
+	}
 }

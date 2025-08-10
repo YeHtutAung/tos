@@ -1,42 +1,36 @@
-/**
- * 
- */
 package com.rex.pos.models;
+
+import java.util.List;
 
 import com.rex.pos.common.Auditable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @author Rex
- *
- */
 @Entity
 @Data
 @NoArgsConstructor
-public class OrderItem extends Auditable {
+public class MenuCategory extends Auditable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@ManyToOne(optional = false)
-	private MenuItem menuItem;
+	@GeneratedValue
+	private Long categoryId;
 
 	@Column(nullable = false)
-	private int quantity = 1;
-
-	@ManyToOne(optional = false)
-	private Order order;
+	private String name;
 
 	@Column(nullable = true)
-	private String specialInstructions;
+	private String description; // Optional
 
+	@ManyToOne
+	private Restaurant restaurant;
+
+	@OneToMany(mappedBy = "category")
+	private List<MenuItem> items;
 }

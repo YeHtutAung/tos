@@ -1,19 +1,24 @@
 package com.rex.pos;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.rex.pos.models.MenuItem;
-import com.rex.pos.models.Wyne;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import com.rex.pos.tos.repository.MenuItemRepository;
 import com.rex.pos.tos.repository.WyneRepository;
 
 @SpringBootApplication
-public class TosApplication implements CommandLineRunner {
+@EnableJpaAuditing(auditorAwareRef = "auditorProvider") // Enable auditing
+public class TosApplication {
 
 	@Autowired
 	MenuItemRepository menuItemRepo;
@@ -26,19 +31,12 @@ public class TosApplication implements CommandLineRunner {
 		SpringApplication.run(TosApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-
-		logger.info("Initializing Table Ordering System with sample data...");
-
-		menuItemRepo.save(new MenuItem(null, "Burger", 9.99));
-		menuItemRepo.save(new MenuItem(null, "Fries", 4.99));
-		menuItemRepo.save(new MenuItem(null, "Coke", 2.99));
-
-		wyneRepository.save(new Wyne(null, 1, "AVAILABLE"));
-		wyneRepository.save(new Wyne(null, 2, "AVAILABLEs"));
-
-		logger.info("Startup data initialization complete.");
-	}
-
+	@Bean
+    public AuditorAware<String> auditorProvider() {
+        return () -> Optional.ofNullable(SecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .filter(Authentication::isAuthenticated)
+                .map(Authentication::getName)
+                .or(() -> Optional.of("SYSTEM")); // Default if no user is logged in
+    }
 }

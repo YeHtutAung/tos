@@ -36,7 +36,7 @@ public class TosApplication implements CommandLineRunner {
 		menuItemRepo.save(new MenuItem(null, "Coke", 2.99));
 
 		wyneRepository.save(new Wyne(null, 1, "AVAILABLE"));
-		wyneRepository.save(new Wyne(null, 2, "AVAILABLE"));
+		wyneRepository.save(new Wyne(null, 2, "AVAILABLEs"));
 
 		logger.info("Startup data initialization complete.");
 	}

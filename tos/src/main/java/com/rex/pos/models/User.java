@@ -26,7 +26,7 @@ public class User extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long userId;
+	private Long Id;
 	
 	@Column(nullable = false) //Required
 	private String name;

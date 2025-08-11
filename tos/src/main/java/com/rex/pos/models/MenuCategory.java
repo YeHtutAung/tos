@@ -20,7 +20,7 @@ public class MenuCategory extends Auditable {
 
 	@Id
 	@GeneratedValue
-	private Long categoryId;
+	private Long Id;
 
 	@Column(nullable = false)
 	private String name;

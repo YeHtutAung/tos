@@ -3,6 +3,8 @@
  */
 package com.rex.pos.models;
 
+import java.math.BigDecimal;
+
 import com.rex.pos.common.Auditable;
 
 import jakarta.persistence.Column;
@@ -35,7 +37,7 @@ public class MenuItem extends Auditable {
 	private String description;
 	
 	@Column(nullable = false)
-	private double price;
+	private BigDecimal price;
 	
 	@Column(nullable = false)
 	private boolean isAvailable;

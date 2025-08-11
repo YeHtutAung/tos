@@ -2,6 +2,7 @@ package com.rex.pos.models;
 
 import com.rex.pos.common.Auditable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,7 +17,7 @@ public class Review extends Auditable {
 
 	@Id
 	@GeneratedValue
-	private Long reviewId;
+	private Long Id;
 
 	@ManyToOne(optional = true)
 	private User user;
@@ -24,9 +25,9 @@ public class Review extends Auditable {
 	@ManyToOne(optional = false)
 	private Order order;
 
-	@ManyToOne(optional = false)
+	@Column(nullable = true)
 	private int rating;
 
-	@ManyToOne(optional = true)
+	@Column(nullable = true)
 	private String comment;
 }

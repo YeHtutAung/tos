@@ -17,7 +17,7 @@ public class Inventory extends Auditable {
 
 	@Id
 	@GeneratedValue
-	private Long inventoryId;
+	private Long Id;
 
 	@Column(nullable = false)
 	private String itemName;

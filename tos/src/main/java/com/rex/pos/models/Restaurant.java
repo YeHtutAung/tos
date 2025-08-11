@@ -21,7 +21,7 @@ public class Restaurant extends Auditable {
 
 	@Id
 	@GeneratedValue
-	private Long restaurantId;
+	private Long Id;
 	
 	@Convert(converter = CryptoConverter.class)
 	@Column(nullable = false)

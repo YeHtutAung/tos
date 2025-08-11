@@ -24,12 +24,6 @@ public class JWTAuthController {
 	private final JwtUtils jwtUtils;
 	private final UserRepository userRepository;
 
-	// Add this constructor manually for Eclipse to recognize injection
-	public JWTAuthController(JwtUtils jwtUtils, UserRepository userRepository) {
-		this.jwtUtils = jwtUtils;
-		this.userRepository = userRepository;
-	}
-
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest request) {
 		try {

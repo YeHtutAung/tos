@@ -3,8 +3,8 @@
  */
 package com.rex.pos.tos.repository;
 
-import java.util.Optional;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.rex.pos.models.Wyne;
@@ -15,5 +15,5 @@ import com.rex.pos.models.Wyne;
  */
 public interface WyneRepository extends JpaRepository<Wyne, Long> {
 
-	Optional<Wyne> findByIdAndRestaurantId(Long id, Long restaurantId);
+	Page<Wyne> findByRestaurantId(Long restaurantId, Pageable pageable);
 }

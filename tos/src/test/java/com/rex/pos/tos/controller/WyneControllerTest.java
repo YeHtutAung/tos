@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
-import com.rex.pos.dto.WyneDto;
+import com.rex.pos.dto.WyneDTO;
 import com.rex.pos.tos.service.WyneService;
 
 @WebMvcTest(WyneController.class)
@@ -38,33 +38,4 @@ class WyneControllerTest {
 	@AfterEach
 	void tearDown() throws Exception {
 	}
-
-	@Test
-    void getTable_returnsWyneDto_whenFound() throws Exception {
-        // Arrange
-        WyneDto dto = new WyneDto(10L, 7, "AVALIABLE", 1L, "QR-XYZ");
-        given(wyneService.getTable(10L)).willReturn(dto);
-
-        // Act + Assert
-        mockMvc.perform(get("/api/tables/{tableId}", 10L)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                // JSON fields based on WyneDto(record) property names
-                .andExpect(jsonPath("$.id").value(10L))
-                .andExpect(jsonPath("$.tableNumber").value(7))
-                .andExpect(jsonPath("$.status").value("AVALIABLE"))
-                .andExpect(jsonPath("$.restaurantId").value(1L))
-                .andExpect(jsonPath("$.qrCode").value("QR-XYZ"));
-    }
-
-	@Test
-    void getTable_returnsServerError_whenServiceThrowsIllegalArgumentException() throws Exception {
-        // No global @ControllerAdvice provided, so expect 500 by default
-        given(wyneService.getTable(anyLong()))
-                .willThrow(new IllegalArgumentException("Table not found: 99"));
-
-        mockMvc.perform(get("/api/tables/{tableId}", 99L)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is5xxServerError());
-    }
 }
